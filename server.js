@@ -78,3 +78,23 @@ app.get('/fetch', async (req, res) => {
     }))
   });
 })
+
+app.get('/locate', async (req, res) => {
+  const compressedName = compressName(req.query.name);
+
+  const station = await database.findByCompressedName(compressedName);
+
+  if (station) {
+    res.json({
+      status: 'success',
+      latitude: station.latitude,
+      longitude: station.longitude
+    });
+  }
+  else {
+    res.json({
+      status: 'error',
+      message: 'Station not found'
+    });
+  }
+})
